@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/parking-spot")
 public class ParkingSpotController {
 
+  private static final String CONFLICT_LICENSE_PLATE_CAR_IS_ALREADY_IN_USE = "Conflict: License Plate Car is already in use!!";
   final ParkingSpotService parkingSpotService;
 
   public ParkingSpotController(ParkingSpotService parkingSpotService) {
@@ -39,7 +40,7 @@ public class ParkingSpotController {
   public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
     if (parkingSpotService.existsByLicensePlateCar(parkingSpotDto.getLicensePlateCar())) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
-          .body("Conflict: License Plate Car is already in use!!");
+          .body(CONFLICT_LICENSE_PLATE_CAR_IS_ALREADY_IN_USE);
     }
     if (parkingSpotService.existsByParkingSpotNumber(parkingSpotDto.getParkingSpotNumber())) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
